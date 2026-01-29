@@ -1,22 +1,28 @@
-# mb2-template: MicroBit 2 Rust embedded project template
+# The Game of Life on the micro::bit v2
 
-*[A version of this template as a [Github
-Template](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template)
-is available on the `main` branch of this repo.]*
+## Description
 
-To use this [`cargo-generate` template
-repository](https://cargo-generate.github.io/cargo-generate/):
+This is a basic Rust implementation for John Conway's "Game of Life" running on the
+micro::bit v2 microcontroller's 5x5 LED matrix. The program rules are as follows:
 
-1. Follow the instructions linked above to make a Git repo
-   for your project.
-   
-2. If needed, do the following to set up your tools:
+- The game starts with a random world state and runs at 10 frames per second.
+- As long as the A button is held, the board will generate a random world state every frame.
+- Otherwise, if the B button is held, the board will invert its state and block the B button
+  for 5 frames (or half a second).
+- If no button is held, the board will take a normal game of life step.
+- If the game of life terminates (i.e. all cells are dead), the board will wait either for
+  a button press or for 5 frames, upon which a random world state is generated and the game
+  begins once again.
 
-       rustup target add thumbv7em-none-eabihf
-       rustup component add llvm-tools
-       cargo install cargo-binutils
-       cargo install --locked probe-rs-tools
+## Build and run
 
-3. Edit this `README.md`, the `Cargo.toml` and the stuff in
-   `src/` to get the names right and the code to do what you
-   need.
+- To build the application without flashing: `cargo build --release` from repo root
+- To build the application and flash to the micro::bit: `cargo embed --release` from repo root
+
+## Implementation details
+
+TBD
+
+## Attribution
+
+All code in the `life.rs` file was provided by [Bart Massey](https://github.com/BartMassey).
