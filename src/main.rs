@@ -23,6 +23,7 @@ const FRAME_LENGTH_MS: u32 = 100;
 const FRAME_RESET_BUFFER: u32 = 5; // number of frames to wait for button/world reset
 
 fn randomize_board(fb: &mut [[u8; 5]; 5], rng: &mut HwRng) {
+    #[allow(clippy::needless_range_loop)]
     for row in 0..5 {
         for col in 0..5 {
             let buf = rng.random_u8();
@@ -32,6 +33,7 @@ fn randomize_board(fb: &mut [[u8; 5]; 5], rng: &mut HwRng) {
 }
 
 fn complement_board(fb: &mut [[u8; 5]; 5]) {
+    #[allow(clippy::needless_range_loop)]
     for row in 0..5 {
         for col in 0..5 {
             fb[row][col] = if fb[row][col] == 0 {1} else {0};
@@ -86,13 +88,11 @@ fn init() -> ! {
                 complement_board(&mut world);
                 button_b_frame_buffer = 0;
             }
-        } else {
-            if done(&world) && world_reset_frame_buffer == 5 {
-                world_reset_frame_buffer = 0;
-            } else if world_reset_frame_buffer == 5 {
-                life(&mut world);
-            } 
-        }
+        } else if done(&world) && world_reset_frame_buffer == 5 {
+            world_reset_frame_buffer = 0;
+        } else if world_reset_frame_buffer == 5 {
+            life(&mut world);
+        } 
 
         display.show(&mut timer, world, FRAME_LENGTH_MS);
     }
